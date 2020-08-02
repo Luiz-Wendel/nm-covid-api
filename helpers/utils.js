@@ -1,6 +1,6 @@
-// Filter city information: create an array of cities (key: city name, objects: confirmed cases and population)
+// Filter city information: create an array of cities with city name, confirmed cases and population
 // Params: an array of cities
-// return: a new array of cities with crutial information only
+// Return: a new array of cities with crutial information only
 const getRefinedList = (cityList) => {
   let result = [];
 
@@ -11,9 +11,8 @@ const getRefinedList = (cityList) => {
       estimated_population_2019: population,
     } = element;
 
-    const refinedCity = {};
-
-    refinedCity[city] = {
+    const refinedCity = {
+      city,
       cases,
       population,
     };
