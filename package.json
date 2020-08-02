@@ -4,7 +4,7 @@
   "description": "- **Expor uma API que recebe um intervalo de datas (leva-se em conta a data de início e de fim) e um estado**",
   "main": "app.js",
   "scripts": {
-    "start": "set DEBUG=app,app=* & nodemon app.js"
+    "start": "set DEBUG=app,app:* & nodemon app.js"
   },
   "repository": {
     "type": "git",
