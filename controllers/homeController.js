@@ -23,14 +23,17 @@ const homeController = {
       const startList = responseStart.data.results;
       const endList = responseEnd.data.results;
 
-      let refinedStartList = utils.getRefinedList(startList);
-      let refinedEndList = utils.getRefinedList(endList);
+      const refinedStartList = utils.getRefinedList(startList);
+      const refinedEndList = utils.getRefinedList(endList);
 
-      return res.json(
-        `${JSON.stringify(refinedStartList)}\n\n\n${JSON.stringify(
-          refinedEndList
-        )}`
+      const list = utils.getIncreasePercentageList(
+        refinedStartList,
+        refinedEndList
       );
+
+      //TODO: POST top 10 cities
+
+      return res.json(`OK`);
     } catch (error) {
       debug(error);
       return res.json(error);

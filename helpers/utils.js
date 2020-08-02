@@ -1,3 +1,5 @@
+const debug = require('debug')('app:utils');
+
 // Filter city information: create an array of cities with city name, confirmed cases and population
 // Params: an array of cities
 // Return: a new array of cities with crutial information only
@@ -23,4 +25,53 @@ const getRefinedList = (cityList) => {
   return result;
 };
 
-module.exports = { getRefinedList };
+// Get increase percentage of cases
+// Params:
+//  start: city info on dateStart
+//  end: city info on dateEnd
+// Return: float (increase percentage of cases)
+const getIncreasePercentage = (start, end) => {
+  const population = parseFloat(start.population);
+  const newCases = parseFloat(end.cases) - parseFloat(start.cases);
+
+  return (newCases / population) * 100;
+};
+
+// Get a list of cities and it's increase percentage of cases
+// Params:
+//  start: city info on dateStart
+//  end: city info on dateEnd
+// Return: an array with all state cities and it's increase percentage of cases
+const getIncreasePercentageList = (start, end) => {
+  const result = [];
+  let count = 0;
+
+  end.forEach((endElement, index) => {
+    let percentage = null;
+    let hasEnded = false;
+
+    if (start.length < index - count) hasEnded = true;
+
+    const startElement = start[index - count];
+
+    // if city already had any case call function to calculate increase percentage,
+    // else calculate percentage based on new cases
+    if (!hasEnded && endElement.city === startElement.city)
+      percentage = getIncreasePercentage(startElement, endElement);
+    else {
+      percentage = (endElement.cases / endElement.population) * 100;
+      count++;
+    }
+
+    const newData = {
+      nomeCidade: endElement.city,
+      percentualDeCasos: percentage,
+    };
+
+    result.push(newData);
+  });
+
+  return result;
+};
+
+module.exports = { getRefinedList, getIncreasePercentageList };
