@@ -1,6 +1,9 @@
 const debug = require('debug')('app:homeController');
 const axios = require('axios');
 
+// Helpers
+const utils = require('../helpers/utils');
+
 const homeController = {
   index: async (req, res) => {
     // Extract date interval and state from query
@@ -26,8 +29,13 @@ const homeController = {
       const startList = responseStart.data.results;
       const endList = responseEnd.data.results;
 
+      let refinedStartList = utils.getRefinedList(startList);
+      let refinedEndList = utils.getRefinedList(endList);
+
       return res.json(
-        `${JSON.stringify(startList)}\n\n\n${JSON.stringify(endList)}`
+        `${JSON.stringify(refinedStartList)}\n\n\n${JSON.stringify(
+          refinedEndList
+        )}`
       );
     } catch (error) {
       debug(error);
