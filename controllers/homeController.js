@@ -10,18 +10,12 @@ const homeController = {
     const { state, dateStart, dateEnd } = req.query;
 
     try {
-      if (!state) return res.status(400).json({ error: 'State not defined!' });
-
-      if (!dateStart || !dateEnd)
-        return res.status(400).json({
-          error:
-            'Date interval not defined! Make sure to set both DateStart and DateEnd!',
-        });
-
+      // Retrieve date start data
       const responseStart = await axios.get(
         `https://brasil.io/api/dataset/covid19/caso/data/?state=${state}&date=${dateStart}`
       );
 
+      // Retrieve date end data
       const responseEnd = await axios.get(
         `https://brasil.io/api/dataset/covid19/caso/data/?state=${state}&date=${dateEnd}`
       );
