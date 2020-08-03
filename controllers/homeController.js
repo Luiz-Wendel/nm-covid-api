@@ -4,6 +4,9 @@ const axios = require('axios');
 // Helpers
 const utils = require('../helpers/utils');
 
+// Quantity of cities with highest increase percentage
+const TOP = 10;
+
 const homeController = {
   index: async (req, res) => {
     // Extract date interval and state from query
@@ -23,13 +26,7 @@ const homeController = {
       const startList = responseStart.data.results;
       const endList = responseEnd.data.results;
 
-      const refinedStartList = utils.getRefinedList(startList);
-      const refinedEndList = utils.getRefinedList(endList);
-
-      const list = utils.getIncreasePercentageList(
-        refinedStartList,
-        refinedEndList
-      );
+      const topCities = utils.getTop(startList, endList, TOP);
 
       //TODO: POST top 10 cities
 

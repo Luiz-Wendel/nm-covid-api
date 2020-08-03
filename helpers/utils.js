@@ -74,4 +74,37 @@ const getIncreasePercentageList = (start, end) => {
   return result;
 };
 
-module.exports = { getRefinedList, getIncreasePercentageList };
+// Get top X highest increase percentage
+const getTop = (start, end, count) => {
+  let result = [];
+  let percentageList = [];
+
+  const refinedStartList = getRefinedList(start);
+  const refinedEndList = getRefinedList(end);
+
+  const cities = getIncreasePercentageList(refinedStartList, refinedEndList);
+
+  cities.forEach((city) => {
+    percentageList.push(city.percentualDeCasos);
+  });
+
+  const topList = percentageList.sort((a, b) => b - a).slice(0, count);
+
+  topList.forEach((topValue, index) => {
+    for (let i = 0; i < cities.length; i++) {
+      if (cities[i].percentualDeCasos === topValue) {
+        const city = {
+          id: index,
+          ...cities[i],
+        };
+
+        result.push(city);
+        break;
+      }
+    }
+  });
+
+  return result;
+};
+
+module.exports = { getRefinedList, getTop };
