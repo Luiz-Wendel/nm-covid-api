@@ -6,6 +6,8 @@ const utils = require('../helpers/utils');
 
 // Quantity of cities with highest increase percentage
 const TOP = 10;
+// My name
+const MeuNome = 'Luiz Alexandre Wendel Balbino';
 
 const homeController = {
   index: async (req, res) => {
@@ -26,11 +28,35 @@ const homeController = {
       const startList = responseStart.data.results;
       const endList = responseEnd.data.results;
 
+      // Get top cities with highest increase percentage cases
       const topCities = utils.getTop(startList, endList, TOP);
 
-      //TODO: POST top 10 cities
+      let responseList = [];
 
-      return res.json(`OK`);
+      // for each city make a post
+      for (let i = 0; i < topCities.length; i++) {
+        const { id, nomeCidade, percentualDeCasos } = topCities[i];
+
+        const responsePost = await axios.post(
+          'https://us-central1-lms-nuvem-mestra.cloudfunctions.net/testApi',
+          {
+            id,
+            nomeCidade,
+            percentualDeCasos,
+          },
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              MeuNome,
+            },
+          }
+        );
+        responseList.push(responsePost.data);
+      }
+
+      return res.json({
+        data: responseList,
+      });
     } catch (error) {
       debug(error);
       return res.json(error);
