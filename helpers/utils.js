@@ -11,15 +11,19 @@ const getRefinedList = (cityList) => {
       city,
       confirmed: cases,
       estimated_population_2019: population,
+      place_type,
     } = element;
 
-    const refinedCity = {
-      city,
-      cases,
-      population,
-    };
+    // Remove states
+    if (place_type === 'city') {
+      const refinedCity = {
+        city,
+        cases,
+        population,
+      };
 
-    result.push(refinedCity);
+      result.push(refinedCity);
+    }
   });
 
   return result;
@@ -50,7 +54,7 @@ const getIncreasePercentageList = (start, end) => {
     let percentage = null;
     let hasEnded = false;
 
-    if (start.length < index - count) hasEnded = true;
+    if (start.length <= index - count || start.length === 0) hasEnded = true;
 
     const startElement = start[index - count];
 
@@ -59,8 +63,11 @@ const getIncreasePercentageList = (start, end) => {
     if (!hasEnded && endElement.city === startElement.city)
       percentage = getIncreasePercentage(startElement, endElement);
     else {
-      percentage = (endElement.cases / endElement.population) * 100;
-      count++;
+      percentage =
+        (parseFloat(endElement.cases) / parseFloat(endElement.population)) *
+        100;
+
+      if (!hasEnded) count++;
     }
 
     const newData = {
@@ -99,6 +106,11 @@ const getTop = (start, end, count) => {
         };
 
         result.push(city);
+
+        // Remove city from array
+        cities.splice(i, 1);
+
+        // Stop the loop
         break;
       }
     }

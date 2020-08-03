@@ -3,6 +3,9 @@ const validation = (req, res, next) => {
 
   if (!state) return res.status(400).json({ error: 'State not defined!' });
 
+  if (!state.match(/^[A-Z]{2}$/g))
+    return res.status(400).json({ error: 'Invalid state!' });
+
   if (!dateStart || !dateEnd)
     return res.status(400).json({
       error:
